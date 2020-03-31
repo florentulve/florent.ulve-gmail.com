@@ -1,0 +1,20 @@
+---
+
+threads: 4
+base: 'http://localhost:9090'
+iterations: 500
+rampup: 2
+
+plan:
+
+  - name: Word
+    request:
+      url: /say
+      method: POST
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: word={{ item }}
+    with_items:
+      - gorille
+      - licorne
+      - marie
