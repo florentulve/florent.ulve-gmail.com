@@ -6,7 +6,6 @@ import java.util.concurrent.CompletionStage;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -27,8 +26,9 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.Context;
 
-@Path("/word")
-public class WordResource{
+//@Path("/word")
+@ApplicationScoped
+public class WordReactiveRoute{
 
     @Inject @Channel("words-internal")
     Emitter<String> emitter;
@@ -36,20 +36,11 @@ public class WordResource{
     @Inject
     Vertx vertx;
 
-    @GET
-    @Path("/say")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Word> say(@QueryParam("word") String word){
-        /*CompletableFuture<String> ret = new CompletableFuture<>();
-        vertx.setTimer(100, res -> {
-            ret.complete(Context.isOnEventLoopThread() ? Thread.currentThread().getName()+"OK" : "not on event loop");
-        });*/
-        //System.out.println(Thread.currentThread().getName());
-        Word w = new Word();
-        w.setContent(Thread.currentThread().getName()+" "+word);
-        //return Uni.createFrom().item(Response.status(Status.OK).entityw).build());
-        return Uni.createFrom().item(w);
-        //return Uni.createFrom().completionStage(ret);
+    /*@GET
+    @Path("/say")*/
+    @Route(path = "/reactive/say", methods = HttpMethod.GET)
+    public void say(RoutingExchange ex){
+        ex.response().setStatusCode(200).end(Thread.currentThread().getName());
     }
 
 }

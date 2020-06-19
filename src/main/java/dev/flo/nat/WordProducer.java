@@ -1,4 +1,4 @@
-package dev.flo;
+package dev.flo.nat;
 
 import java.time.Duration;
 import java.util.Properties;
@@ -17,6 +17,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.flo.Word;
 import io.quarkus.scheduler.Scheduled;
 
 @ApplicationScoped
@@ -48,14 +49,14 @@ public class WordProducer{
         Word w = new Word();
         w.setContent(word);
         try {
-            LOGGER.info(objectMapper.writeValueAsString(w));
+            //LOGGER.info(objectMapper.writeValueAsString(w));
             producer.send(new ProducerRecord<String, String>("words", "categ", objectMapper.writeValueAsString(w)));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
-	@Scheduled(every = "5s")
+	/*@Scheduled(every = "5s")
 	public void produceEvery10s() {
         LOGGER.info("Producing word");
         for (int i = 0; i < 100; i++){
@@ -67,7 +68,7 @@ public class WordProducer{
                 e.printStackTrace();
             }
         }
-    }
+    }*/
     
     @PreDestroy
     public void shutdown() {

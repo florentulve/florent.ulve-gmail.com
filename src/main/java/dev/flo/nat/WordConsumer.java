@@ -1,4 +1,4 @@
-package dev.flo;
+package dev.flo.nat;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -21,10 +21,11 @@ import org.eclipse.microprofile.context.ManagedExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.flo.Word;
 import io.quarkus.runtime.Startup;
 
 @ApplicationScoped
-@Startup
+//@Startup
 public class WordConsumer implements Runnable{
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
@@ -64,6 +65,7 @@ public class WordConsumer implements Runnable{
             consumer.subscribe(Arrays.asList("words"));
             LOGGER.info("Start consuming words");
             while (!closed.get()) {
+                System.out.println(Thread.currentThread().getName());
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
                 //logger.info("Polling has fetch "+records.count()+ " record ");
                 for (ConsumerRecord<String, String> record : records) {

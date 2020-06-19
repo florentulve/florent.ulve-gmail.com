@@ -1,19 +1,19 @@
 ---
 
-threads: 4
+threads: 100
 base: 'http://localhost:9090'
-iterations: 500
-rampup: 2
+iterations: 200
+#rampup: 5
 
 plan:
 
   - name: Word
     request:
-      url: /say
-      method: POST
-      headers:
-        Content-Type: application/x-www-form-urlencoded
-      body: word={{ item }}
+      url: /word/say?word={{item}}
+      method: GET
+      #headers:
+        #Content-Type: application/x-www-form-urlencoded
+      #body: word={{ item }}
     with_items:
       - gorille
       - licorne
